@@ -12,3 +12,10 @@ Usage of U-Net for image-to-image-translation inspired [Image-to-Image Translati
 (Enter Result Comparison images)
 (ORIGINAL, CYCLEGAN
 
+## Results
+
+![smol results](results_smol.png)
+
+Many more results shown below. All images are of size 512x512.
+
+![large many](results_many.png)
