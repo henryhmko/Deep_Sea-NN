@@ -10,12 +10,20 @@ Usage of U-Net for image-to-image-translation inspired [Image-to-Image Translati
 ## Overview
 
 (Enter Result Comparison images)
-(ORIGINAL, CYCLEGAN
+
+## Background
+
+## Dataset
+
+Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) dataset](https://irvlab.cs.umn.edu/resources/euvp-dataset).
+- 3700 Paired Underwater ImageNet + 1270 for validation
+- 2185 Paired Underwater Scenes + 130 for validation
+
 
 ## Results
 
-![smol results](results_smol.png)
+![smol results](result_imgs/results_smol.png)
 
 Many more results shown below. All images are of size 512x512.
 
-![large many](results_many.png)
+![large many](results_imgs/results_many.png)
