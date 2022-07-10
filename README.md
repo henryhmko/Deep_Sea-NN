@@ -1,9 +1,9 @@
 # Deep Sea-NN
-Enhancing underwater images using a customized U-Net architecture for real-time color correction applications.
+Enhancing underwater images using a truncated U-Net architecture for real-time color correction applications.
 
 ---
 
-Customized U-Net architecture inspired by [UWGAN: Underwater GAN for Real-world Underwater Color Restoration and Dehazing](https://arxiv.org/abs/1912.10269).
+Truncated U-Net architecture inspired by [UWGAN: Underwater GAN for Real-world Underwater Color Restoration and Dehazing](https://arxiv.org/abs/1912.10269).
 
 Usage of U-Net for image-to-image-translation inspired [Image-to-Image Translation with Conditional Adversarial Networks](https://arxiv.org/abs/1611.07004).
 
@@ -37,6 +37,7 @@ I love diving and filming but my underwater photos come out with distorted color
 Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) dataset](https://irvlab.cs.umn.edu/resources/euvp-dataset).
 - 3700 Paired Underwater ImageNet + 1270 for validation
 - 2185 Paired Underwater Scenes + 130 for validation
+- Total: 5885 Paired Underwater Image Sets for training + 1400 for validation
 
 
 ## Results
@@ -60,11 +61,20 @@ Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) data
 ## Truncated U-Net architecture
 
 - Inspired by [Shallow UWnet's](https://arxiv.org/abs/2101.02073) unbelievably simple(yet really good results considering its simplicity) architecture of just 3 densely connected convolutional blocks with skip connections, I decided to stick with CNNs with skip layers. It's just that...
-  1) Shallow UWnet created blurry outputs and lost some details when testing. They did use the VGG perceptual loss + L1 loss, which has been said to create blotchy results by the [NVIDIA/MIT MEDIA LAB paper](https://arxiv.org/pdf/1511.08861.pdf).
-  2) Did not deal well with resized images of larger sizes than 256x256(size it was trained upon), therefore making it unappealing for people like me who want personal semi-quality diving photos(well inference image size should at least be over 256x256..it's 2022...). Think this was due to a rather shallow model architecture not being able to capture many color features patterns.
-  - This led me to look for a CNN architecture which has skip connections(for content preservation), dropout(for generalization), while capturing features well...which naturally was a U-Net. It's flexibiility in working with various input image sizes was a big plus.
+  1) Shallow UWnet created blurry outputs and lost some details when testing. They did use the VGG perceptual loss + MSE loss, which has been said to create blotchy results by the [NVIDIA/MIT MEDIA LAB paper](https://arxiv.org/pdf/1511.08861.pdf).
+  2) Did not work well with resized images of larger sizes than 256x256(size it was trained upon), therefore making it unappealing for people like me who want personal semi-quality diving photos(well inference image size should at least be over 256x256..it's 2022...). Think this was due to a rather shallow model architecture not being able to capture many color features patterns to generalize to larger input image sizes.
+  - This led me to look for a CNN architecture which has skip connections(for content preservation), dropout+deep architecture(for generalization), while capturing features well...which naturally led to an U-Net. Its flexibiility in working with various input image sizes was a big plus.
   
-- Realized I didn't need the traditionally deep U-Net since even the Shallow-UWnet performs so well, so I took out once max-pool-depth layer and worked with a shallower U-Net to accelerate training time.
+- Realized I didn't need the traditionally deep U-Net since even the Shallow-UWnet performs so well, so I took out one max-pool-depth layer and worked with a shallower U-Net to accelerate training time.
 
-## Ablation reVelAtions
 
+## Choice of Loss function: MS-SSIM + L1
+### VGG+MSE vs MS-SSIM+L1
+<p align="center">
+  <img src="https://github.com/henryhmko/Deep_Sea-NN/blob/main/result_imgs/loss_comparison.png" width="740"/>
+</p>
+
+- MS-SSIM+L1(right) captures fine-grain details better than the VGG+MSE(left).
+  1) MS-SSIM show distinct anemone tentacles(yellow box) while vgg+mse show a blob
+  2) Effectiveness of MS-SSIM in darker regions(green box) is less apparent, but still looks a bit crispier(would have to compare SSIM, PSNR, or [UIQM metrics](https://ieeexplore.ieee.org/document/7305804)(for images with no ground truth=>i.e. images that I took on my own) for exact quantitative results..which i am too lazy to do for this project... 
+- Shallow UWnet used a VGG+MSE loss, but results 
