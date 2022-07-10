@@ -77,4 +77,32 @@ Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) data
 - MS-SSIM+L1(right) captures fine-grain details better than the VGG+MSE(left).
   1) MS-SSIM show distinct anemone tentacles(yellow box) while vgg+mse show a blob
   2) Effectiveness of MS-SSIM in darker regions(green box) is less apparent, but still looks a bit crispier(would have to compare SSIM, PSNR, or [UIQM metrics](https://ieeexplore.ieee.org/document/7305804)(for images with no ground truth=>i.e. images that I took on my own) for exact quantitative results..which i am too lazy to do for this project... 
-- Shallow UWnet used a VGG+MSE loss, but results 
+
+## Deeper Dive into Loss Function Choice: optimal gaussian sigma values
+
+- There's two choices of loss functions when it comes to the SSIM family: the classic SSIM or the beefed-up MS-SSIM.
+  1) SSIM loss functions are sensitive to the specific gaussian sigma value it uses. A smaller gaussian sigma value works well with correcting edges in an image while leaving splotchy artifacts in flat areas while a higher gaussian sigma value does the exact opposite(see results below from [this paper](https://arxiv.org/pdf/1511.08861.pdf)). 
+  
+<p align="center">
+  <img src="https://github.com/henryhmko/Deep_Sea-NN/blob/main/result_imgs/gaussian_sigmas.png" width="740"/>
+</p>
+
+  2) Enter the beefed up MS-SSIM. Instead of going through the work of fine-tuning your gaussian sigma values, MS-SSIM calculates SSIM scores on difference scales on the image and works with multiple gaussian sigma values. The authors of the original paper set gaussian sigmas to be [0.5, 1, 2, 4, 8].
+
+
+### To be SSIM or MS-SSIM? 
+MS-SSIM will outperform SSIM in most common scenarios, but the paper also mentions...
+> "Thanks to its multi-scale nature, MS-SSIM solves the issue of noise around edges, but does not solve the problem of the change colors in flat areas, in particular when at least one channel is strong, as is the case with the sky." - from [Loss Functions for Image Restoration with Neural Networks](https://arxiv.org/pdf/1511.08861.pdf)
+
+MS-SSIM is, after all, a better generalization of SSIM where we can avoid the issue of finding the optimal gaussian sigma value, but it is a convenient generalization.
+
+- However, *what if we know the exact distribution of the images our model will see when it is deployed?* (in other words, what if we know if our model will see images consisted mostly of edges instead of flat areas or vice versa?)
+
+### Special Case of the Underwater Environment
+
+- Underwater environment is 3d! Open water area applications(like robots following divers) then use SSIM with a high gaussian sigma value. If it's for more scientific purposes of, say, taking pics of underwater organisms where details(EDGES) are key then train with SSIM with a low gaussian sigma value. This would be a good fine-tuning method and one that reduces training time just by having a clear purpose to the model we're training.
+
+
+
+
+
