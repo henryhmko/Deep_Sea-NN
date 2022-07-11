@@ -55,6 +55,8 @@ Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) data
   <img src="https://github.com/henryhmko/Deep_Sea-NN/blob/main/result_imgs/ugan_comparison.png" width="740"/>
 </p>
 
+- UGAN outputs tend to lose image detail upon correction and include checkerboard artifacts in its background. This could be a problem for tasks such as color correction for marine biological research where exact details of an organism(e.g. size of spots on the porcupine puffer_row1) must be preserved.
+- This is not the case with Deep Sea-NN where original content detail is preserved while correcting distorted colors.
 
 # Extra stories
 
@@ -62,14 +64,14 @@ Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) data
 
 - Inspired by [Shallow UWnet's](https://arxiv.org/abs/2101.02073) unbelievably simple(yet really good results considering its simplicity) architecture of just 3 densely connected convolutional blocks with skip connections, I decided to stick with CNNs with skip layers. It's just that...
   1) Shallow UWnet created blurry outputs and lost some details when testing. They did use the VGG perceptual loss + MSE loss, which has been said to create blotchy results by the [NVIDIA/MIT MEDIA LAB paper](https://arxiv.org/pdf/1511.08861.pdf).
-  2) Did not work well with resized images of larger sizes than 256x256(size it was trained upon), therefore making it unappealing for people like me who want personal semi-quality diving photos(well inference image size should at least be over 256x256..it's 2022...). Think this was due to a rather shallow model architecture not being able to capture many color features patterns to generalize to larger input image sizes.
-  - This led me to look for a CNN architecture which has skip connections(for content preservation), dropout+deep architecture(for generalization), while capturing features well...which naturally led to an U-Net. Its flexibiility in working with various input image sizes was a big plus.
+  2) Did not work well with resized images of larger sizes than 256x256(size it was trained upon), therefore making it unappealing for people like me who want personal semi-quality diving photos(well inference image size should at least be over 256x256..it's 2022...). Maybe this was due to a rather shallow model architecture not being able to capture many color features patterns to generalize to larger input image sizes.
+  - This led me to look for a CNN architecture which has skip connections(for content preservation) and a deep architecture(for generalization), while capturing features well...which naturally led to an U-Net. Its flexibiility in working with various input image sizes during inference was a big plus.
   
 - Realized I didn't need the traditionally deep U-Net since even the Shallow-UWnet performs so well, so I took out one max-pool-depth layer and worked with a shallower U-Net to accelerate training time.
 
 
 ## Choice of Loss function: MS-SSIM + L1
-### VGG+MSE vs MS-SSIM+L1
+### VGG+MSE vs MS-SSIM+L1 (ABLATION STUDY)
 <p align="center">
   <img src="https://github.com/henryhmko/Deep_Sea-NN/blob/main/result_imgs/loss_comparison.png" width="740"/>
 </p>
@@ -94,14 +96,26 @@ Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) data
 MS-SSIM will outperform SSIM in most common scenarios, but the paper also mentions...
 > "Thanks to its multi-scale nature, MS-SSIM solves the issue of noise around edges, but does not solve the problem of the change colors in flat areas, in particular when at least one channel is strong, as is the case with the sky." - from [Loss Functions for Image Restoration with Neural Networks](https://arxiv.org/pdf/1511.08861.pdf)
 
-MS-SSIM is, after all, a better generalization of SSIM where we can avoid the issue of finding the optimal gaussian sigma value, but it is a convenient generalization.
+MS-SSIM is, after all, a better generalization of SSIM where we can avoid the hassle of finding the optimal gaussian sigma value, but it is only a convenient generalization.
 
-- However, *what if we know the exact distribution of the images our model will see when it is deployed?* (in other words, what if we know if our model will see images consisted mostly of edges instead of flat areas or vice versa?)
+- BUT *what if we know the exact distribution of the images our model will see when it is deployed?* (in other words, what if we know whether if our model will see images consisted mostly of edges instead of flat areas or vice versa?)
 
-### Special Case of the Underwater Environment
+I believe we can put an answer to this question when working with underwater environments.
 
-- Underwater environment is 3d! Open water area applications(like robots following divers) then use SSIM with a high gaussian sigma value. If it's for more scientific purposes of, say, taking pics of underwater organisms where details(EDGES) are key then train with SSIM with a low gaussian sigma value. This would be a good fine-tuning method and one that reduces training time just by having a clear purpose to the model we're training.
+### Special Case for the Underwater Environment
 
+Unlike the surface where a picture of a street will include both edges(pedestrians, signs, etc) and flat areas(open skies), many under
+
+- If, for example, a model is aimed to take a lot of pictures of marine organisms then it will process images that are bound to include a lot of edges. Those edges may be the fins of a particular fish, tentacles of an anemone, geometric patterns for camouflage, or such. With such a distribution, we could directly train the model with a SSIM loss using a small gaussian sigma.
+
+- On the contrary, the opposite example would be a model exposed to images which are mostly filled with flat areas. In the underwater environment, this would be open water images(like the one below-it's me in jeju yeee) where images are ~80% filled with different shades of a single color. For this case, it would be appropriate to train the model with a SSIM loss using a high gaussian sigma.
+  - A potential application for this kind of model could be an AUV following a human diver and, thus the need to consistently process images like the one below to track the diver's current location.
+
+<p align="center">
+  <img src="https://github.com/henryhmko/Deep_Sea-NN/blob/main/result_imgs/noice_diver.JPG" width="740"/>
+</p>
+
+This method would be a good fine-tuning practice to specifically tailor your model to the data it will mostly see upon deployment.
 
 
 
