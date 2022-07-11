@@ -118,5 +118,25 @@ Unlike the surface where a picture of a street will include both edges(pedestria
 This method would be a good fine-tuning practice to specifically tailor your model to the data it will mostly see upon deployment.
 
 
+## Suggestions for Future Models
 
+1) Utilize Average-Pooling instead of Max-Pooling between U-Net Layers
+> "Each transparent particle...are multiple, small-sized, independent, and occupying 20 to 35 pixels, ordinary deep U-net model leads to certain small-sized particles being lost. As the particles are all homogeneous beads...average pooling can properly remain the particle shape." - from [Short U-net model with average pooling based on in-line digital holography for simultaneous restoration of multiple particles](https://www.sciencedirect.com/science/article/pii/S014381662031887X)
+
+- TLDR for the paper above: Classic U-Nets with max pooling tend to omit detections of small sized particles. They replaced max pool with avg pool to prevent the dropping of these small particles and achieved successful results.
+- Applying this study, we can build U-Net models with avg pooling if the model must capture minute details. Examples of such details in the context of underwater vision systems may be having to caputure individual coral polyps or tentacles of an anemone.
+
+- Another reason for trying out the switch is...
+
+  > "For image synthesis we found that replacing the max-pooling operation by average pooling improves the gradient flow and one obtains slightly more appealing reults." - from [A Neural Algorithm of Artistic Style](https://arxiv.org/abs/1508.06576)
+
+
+2) Using Attention_Res-UNet or Res-UNet for model architecture
+- Although skip connections in the classic U-Net architecture transfer content very well, these skip connections from shallower levels of the net also transfer data with low feature information. It is during the deeper parts of the net where better features are learned.
+- With the help of attention gates the model could filter skip connections containing less-learned features. 
+- BUT training would take ~2 or ~3 times longer than the classic UNet due to increased parameters and steps in training. Would be an interesting ablation study to do to see how well the attention gates help the model generalize to different distortions.
+
+3) Generalize Dataset
+- Each ocean offers a different type of distortion due to their differences in density, salinity, turbidity, etc.
+- It is crucial to find specific data from the waters you will be testing on to optiimize your outputs.
 
