@@ -140,3 +140,8 @@ This method would be a good fine-tuning practice to specifically tailor your mod
 - Each ocean offers a different type of distortion due to their differences in density, salinity, turbidity, etc.
 - It is crucial to find specific data from the waters you will be testing on to optiimize your outputs.
 
+## Next Steps
+
+Would like to train GAN models with unpaired datasets. CNN results are great, but there is the limitation of having to acquire paired training data :(
+
+With such a model I could possibly generalize better to the waters of Korea where paired datasets are less existent while its conditions can be very different from many of the EUVP dataset that I used to train the Deep Sea-NN.
