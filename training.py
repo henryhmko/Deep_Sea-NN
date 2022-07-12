@@ -91,4 +91,4 @@ def run_training():
 
 
 ### START TRAINING ###
-run_training()
+#run_training()
