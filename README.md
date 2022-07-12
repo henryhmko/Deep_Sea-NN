@@ -1,7 +1,9 @@
 # Deep Sea-NN
-Enhancing underwater images using a truncated U-Net architecture for real-time color correction applications.
+### Enhancing underwater images using a truncated U-Net architecture for real-time color correction applications
 
----
+> *"The shore is an ancient world… Yet it is a world that keeps alive the sense of continuing creation and of the relentless drive of life.”*
+>  from **The Edge of the Sea** by Rachel Carson
+
 
 Truncated U-Net architecture inspired by [UWGAN: Underwater GAN for Real-world Underwater Color Restoration and Dehazing](https://arxiv.org/abs/1912.10269).
 
@@ -108,11 +110,14 @@ Unlike the surface where a picture of a street will include both edges(pedestria
 
 - If, for example, a model is aimed to take a lot of pictures of marine organisms then it will process images that are bound to include a lot of edges. Those edges may be the fins of a particular fish, tentacles of an anemone, geometric patterns for camouflage, or such. With such a distribution, we could directly train the model with a SSIM loss using a small gaussian sigma.
 
-- On the contrary, the opposite example would be a model exposed to images which are mostly filled with flat areas. In the underwater environment, this would be open water images(like the one below-it's me in jeju yeee) where images are ~80% filled with different shades of a single color. For this case, it would be appropriate to train the model with a SSIM loss using a high gaussian sigma. This would reduce the creation of splotchy artifacts in the processed output images.
+- On the contrary, the opposite example would be a model exposed to images which are mostly filled with flat areas. In the underwater environment, this would be open water images(like the one below) where images are ~80% filled with different shades of a single color. For this case, it would be appropriate to train the model with a SSIM loss using a high gaussian sigma. This would reduce the creation of splotchy artifacts in the processed output images.
   - A potential application for this kind of model could be an AUV following a human diver and, thus the need to consistently process images like the one below to track the diver's current location.
 
 <p align="center">
-  <img src="https://github.com/henryhmko/Deep_Sea-NN/blob/main/result_imgs/noice_diver.JPG" width="340"/>
+  <img src="https://github.com/henryhmko/Deep_Sea-NN/blob/main/result_imgs/noice_diver.JPG" width="440"/>
+  <div align = "center">
+  me diving in jeju!
+  </div>
 </p>
 
 This method would be a good fine-tuning practice to specifically tailor your model to the data it will mostly see upon deployment.
