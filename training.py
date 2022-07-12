@@ -20,11 +20,11 @@ def setup(resume_train = False, filepath = False):
   if resume_train: #if resuming training...
     if os.path.isfile(filepath):
       print("==> loading checkpoint '{}'".format(filepath))
-        checkpoint = torch.load(filepath)
-        start_epoch = checkpoint['epoch'] + 1 #training should start from the next epoch
-        model.load_state_dict(checkpoint['state_dict'])
-        opt.load_state_dict(checkpoint['optimizer'])
-        print("==> loaded checkpoint '{}' (epoch {})".format(filepath, start_epoch - 1))
+      checkpoint = torch.load(filepath)
+      start_epoch = checkpoint['epoch'] + 1 #training should start from the next epoch
+      model.load_state_dict(checkpoint['state_dict'])
+      opt.load_state_dict(checkpoint['optimizer'])
+      print("==> loaded checkpoint '{}' (epoch {})".format(filepath, start_epoch - 1))
     else:
         print("==> no checkpoint found. Check File Path!")
     return model, opt, loss, start_epoch
