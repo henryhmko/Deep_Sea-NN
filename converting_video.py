@@ -3,9 +3,9 @@ import cv2
 import math
 
 
-!apt install ffmpeg
+!apt install ffmpeg 
 
-video_file = '/content/original.mp4'
+video_file = '/content/original.mp4' #change to appropriate path and file name
 video_dir = '/content/'
 original_dir = video_dir + 'original/'
 corrected_dir = video_dir + 'corrected/'
