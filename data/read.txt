@@ -1,1 +1,1 @@
-folder containg training data: inputs and labels
+folder containing training data( inputs and labels) + test inputs
