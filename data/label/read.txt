@@ -1,0 +1,3 @@
+enter labels in this folder
+
+NOTE: labels must consist paired sets from images in the ./input folder
