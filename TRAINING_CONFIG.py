@@ -20,7 +20,7 @@ model_name = 'unetSSIM'
 
 # Testing Image Directories(input / output) & test image size
 test_image_path = './data/test_imgs/'
-output_images_path = './data/test_output/unetSSIM/'
+output_images_path = './data/test_output/unetssim/'
 test_img_size = 512
 
 
@@ -28,4 +28,4 @@ test_img_size = 512
 ckpt_path = './snapshots/unetDROPn/model_epoch_49_unetDROPn.ckpt'
 
 # Enter model path for TESTING (ENTER MODEL.CKPT FILES!)
-test_model_path = '/notebooks/snapshots/unetSSIM_BIG/model_epoch_49_USSIM_BIG_MODEL.ckpt'
+test_model_path = './model_ckpt/deep_seann_FINALMODEL.ckpt'
