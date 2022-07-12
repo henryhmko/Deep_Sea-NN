@@ -60,6 +60,13 @@ Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) data
 - UGAN outputs tend to lose image detail upon correction and include checkerboard artifacts in its background. This could be a problem for tasks such as color correction for marine biological research where exact details of an organism(e.g. size of spots on the porcupine puffer_row1) must be preserved.
 - This is not the case with Deep Sea-NN where original content detail is preserved while correcting distorted colors.
 
+### Rough sample of an AUV application(very rough): Original(left) / Corrected by Deep Sea-NN(right)
+<p align="center">
+  <img src="https://github.com/henryhmko/Deep_Sea-NN/blob/main/result_imgs/sharkie_giffie.gif" width="740"/>
+</p>
+
+shark above [from youtube](https://www.youtube.com/watch?v=yy6xQq1F58I)
+
 # Extra stories
 
 ## Truncated U-Net architecture
