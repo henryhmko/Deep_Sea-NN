@@ -67,6 +67,9 @@ Dataset from U of Minnesota's [EUVP(Enhancing Underwater Visual Perception) data
 
 shark above [from youtube](https://www.youtube.com/watch?v=yy6xQq1F58I)
 
+- Media above is 20FPS, and the upper limit for real-time enhancement for Deep Sea-NNs are media of ~20FPS. 
+- For a stabler application FPS would have to decreased to ~15FPS or lower.
+
 # Extra stories
 
 ## Truncated U-Net architecture
