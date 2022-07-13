@@ -113,7 +113,7 @@ I believe we can put an answer to this question when working with underwater env
 
 ### Special Case for the Underwater Environment
 
-Unlike the surface where a picture of a street will include both edges(pedestrians, signs, etc) and flat areas(open skies), many under
+Unlike the surface where a picture of a street will include both edges(pedestrians, signs, etc) and flat areas(open skies), underwater images will most likely consist only of either edges or flat areas. 
 
 - If, for example, a model is aimed to take a lot of pictures of marine organisms then it will process images that are bound to include a lot of edges. Those edges may be the fins of a particular fish, tentacles of an anemone, geometric patterns for camouflage, or such. With such a distribution, we could directly train the model with a SSIM loss using a small gaussian sigma.
 
@@ -148,7 +148,7 @@ This method would be a good fine-tuning practice to specifically tailor your mod
 - With the help of attention gates the model could filter skip connections containing less-learned features. 
 - BUT training would take ~2 or ~3 times longer than the classic UNet due to increased parameters and steps in training. Would be an interesting ablation study to do to see how well the attention gates help the model generalize to different distortions.
 
-3) Generalize Dataset
+3) Generalize Dataset beyond EUVP
 - Each ocean offers a different type of distortion due to their differences in density, salinity, turbidity, etc.
 - It is crucial to find specific data from the waters you will be testing on to optiimize your outputs.
 
