@@ -6,7 +6,6 @@ from torchvision import transforms
 from torch.utils.data import DataLoader
 from TRAINING_CONFIG import * 
 
-"Code from [Shallow-UWnet/dataloader.py] from 'mkartik' github with smol changes"
 
 
 def get_image_list(raw_image_path, clear_image_path, is_train):
