@@ -1,3 +1,14 @@
+"""
+Code from MS-SSIM_L1_Loss/MS_SSIM_L1_loss.py] from 'psyrocloud' github with smol changes
+    1) changed alpha value 
+    2) omitted 'compensation' usage
+"""
+
+"""
+Created on Thu Dec  3 00:28:15 2020
+@author: Yunpeng Li, Tianjin University
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
